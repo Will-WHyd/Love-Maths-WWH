@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(){
     for (let button of buttons) {
         button.addEventListener("click", function(){
             if (this.getAttribute("data-type") === "submit") {
-                alert("You clicked Submit!");
+                checkAnswer();
             } else {
                 let gameType = this.getAttribute("data-type");
                 runGame(gameType);
@@ -36,8 +36,24 @@ function runGame (gameType) {
     }
 }
 
-function checkAnswer(){
 
+/**
+ * Checks the answer provided by the player against the result of the calculated correct answer.
+ */
+function checkAnswer(){
+    let userAnswer = parseInt(document.getElementById("answer-box").value);
+    let calculatedAnswer = calculateCorrectAnswer();
+    let isCorrect = userAnswer === calculatedAnswer[0];
+
+    if(isCorrect) {
+        alert("Congrats! You got it right!");
+        incrementScore();
+    } else {
+        alert(`Awww... you answered ${userAnswer}, but the correct answer was ${calculatedAnswer[0]}`);
+        incrementWrongAnswer ();
+    }
+
+    runGame(calculatedAnswer[1]);
 }
 
 /**
@@ -58,12 +74,20 @@ function calculateCorrectAnswer(){
 
 }
 
+/**
+ * Gets current score vfrom dom and increments it by 1
+ */
 function incrementScore () {
-
+    let oldScore = parseInt(document.getElementById("score").innerText);
+    document.getElementById("score").innerText = ++oldScore;
 }
 
+/**
+ * Gets current wrong answer sum from dom and increments it by 1
+ */
 function incrementWrongAnswer () {
-
+    let oldIncorrect = parseInt(document.getElementById("incorrect").innerText);
+    document.getElementById("score").innerText = ++oldIncorrect;
 }
 
 function displayAdditionQuestion(operand1, operand2){
